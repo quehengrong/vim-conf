@@ -1,8 +1,8 @@
 # vim-conf
 
-基于 [vim-plug](https://github.com/junegunn/vim-plug) + [coc.nvim](https://github.com/neoclide/coc.nvim) 的个人 Vim 配置，提供代码补全、诊断、跳转、代码片段、文件模糊搜索、Git 集成和文件树等功能。
+个人开发环境配置仓库，覆盖 **Vim + tmux + Zsh** 三个常用工具，克隆后按 README 操作即可在另一台机器上复用同一套配置。
 
-> 注意：只是把 `.vimrc` 拷到另一台机器**不够**。真正完整的配置由四部分组成：本仓库的配置文件 + vim-plug + vim-plug 插件 + coc 扩展 + 系统级命令，下面按顺序操作即可。
+> 注意：本仓库只保存“你自己的配置文件”，第三方框架和插件（vim-plug、oh-my-zsh、gpakosz/.tmux、coc 扩展等）仍需要在目标机器上安装，README 已给出对应命令。
 
 ## 仓库结构
 
@@ -10,6 +10,9 @@
 | --- | --- |
 | `.vimrc` | Vim 主配置（按键、插件列表、coc 集成） |
 | `.vim/coc-settings.json` | coc.nvim 与语言服务器配置 |
+| `tmux/.tmux.conf.local` | tmux 自定义配置（基于 gpakosz/.tmux，含 vim-tmux-navigator 联动） |
+| `zsh/.zshrc` | zsh + oh-my-zsh 配置（含 zsh-vi-mode） |
+| `zsh/.p10k.zsh` | Powerlevel10k 主题配置 |
 | `README.md` | 本说明 |
 
 ## 环境要求
@@ -20,8 +23,11 @@
 - `clangd` 在 PATH 中（C/C++ 补全/诊断）
 - `rg`（ripgrep，`:Rg` 与 coc-fzf-preview 的预览依赖它）
 - Python 3（使用 coc-pyright 编写 Python 时需要）
+- zsh + [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) + [Powerlevel10k](https://github.com/romkatv/powerlevel10k)（zsh 配置需要）
+- tmux（>= 2.4）与 [gpakosz/.tmux](https://github.com/gpakosz/.tmux)（tmux 配置需要）
+- 可选工具：`lsd`（ls 别名）、`fdfind`（fd 别名）、`autojump`（zshrc 的 autojump 插件用到）
 
-## 快速安装
+## Vim 快速安装
 
 ### 1. 获取本仓库
 
@@ -30,7 +36,7 @@ git clone https://github.com/quehengrong/vim-conf.git
 cd vim-conf
 ```
 
-### 2. 安装配置文件
+### 2. 安装 Vim 配置文件
 
 推荐用软链接，之后 `git pull` 即可同步更新：
 
@@ -125,9 +131,65 @@ sudo apt-get install -y vim-gtk3
 
 光标悬停时会自动高亮当前符号及其引用。进入 snippet 后，片段内占位符跳转由 `Tab` 完成。
 
-## tmux 联动
+## tmux 配置
 
-如果同时使用 tmux，为了让 `Ctrl-h/j/k/l` 在 Vim 分屏和 tmux pane 之间无缝移动，需要把 vim-tmux-navigator 的配置加进 `~/.tmux.conf`（gpakosz/.tmux 用户加在 `~/.tmux.conf.local` 的 `# "$@"` 一行之前）：
+仓库里只保存 tmux 的自定义部分 `tmux/.tmux.conf.local`，主题基础仍使用 [gpakosz/.tmux](https://github.com/gpakosz/.tmux)。
+
+首次安装：
+
+```bash
+git clone https://github.com/gpakosz/.tmux.git ~/.tmux
+ln -sf ~/.tmux/.tmux.conf ~/.tmux.conf
+ln -sf ~/vim-conf/tmux/.tmux.conf.local ~/.tmux.conf.local
+tmux source-file ~/.tmux.conf
+```
+
+`Ctrl-h/j/k/l` 在 Vim 分屏和 tmux pane 之间无缝切换所需的两侧配置已分别包含在 `.vimrc` 插件与 `.tmux.conf.local` 中，无需再手工加绑定。
+
+常用 tmux 按键：
+
+- `Ctrl-b` 或 `Ctrl-a` 为 prefix；
+- `Ctrl-b -`：上下分屏；`Ctrl-b _`：左右分屏；
+- `Ctrl-b x`：关闭当前 pane；`Ctrl-b &`：关闭整个窗口；
+- `Ctrl-b h/j/k/l`：在 pane 之间移动；`Ctrl-b Ctrl-h/l`：切换上一个/下一个窗口。
+
+## Zsh 配置
+
+仓库里保存 `zsh/.zshrc` 与 `zsh/.p10k.zsh`（Powerlevel10k 主题配置）。
+
+首次安装（假设已安装 zsh 与 oh-my-zsh）：
+
+```bash
+# 1. 软链接配置文件
+ln -sf ~/vim-conf/zsh/.zshrc ~/.zshrc
+ln -sf ~/vim-conf/zsh/.p10k.zsh ~/.p10k.zsh
+
+# 2. 安装 Powerlevel10k 主题
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+
+# 3. 安装 .zshrc 用到的自定义插件
+git clone https://github.com/zsh-users/zsh-autosuggestions \
+  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting \
+  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+git clone https://github.com/jeffreytse/zsh-vi-mode \
+  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-vi-mode"
+
+# 4. 重启 shell
+exec zsh
+```
+
+`zsh-vi-mode` 让命令行编辑接近 Vim：
+
+- `Esc` 进入 normal 模式，`i` 返回 insert 模式；
+- 支持 `b`/`w`/`e`、`ciw`/`diw`/`caw` 等文本对象；
+- 可视模式选择文本、`yy`/`p` 复制粘贴、`.` 重复上次操作；
+- `vv` 用外部编辑器编辑整条命令行，`gx` 打开光标下的 URL/路径。
+
+> 依赖提醒：`.zshrc` 里的 `ls` 别名需要 `lsd`，`fd` 别名需要 `fdfind`，`autojump` 插件需要对应二进制；新机器缺哪个工具就装哪个，或删掉对应行。
+
+## 跨机器注意事项
 
 ```tmux
 is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
@@ -150,9 +212,15 @@ bind-key -n 'C-\' if-shell "$is_vim" 'send-keys C-\\'  'select-pane -l'
 
 ```bash
 git -C ~/vim-conf pull          # 如果用了软链接
-# 然后在 Vim 内执行:
+# Vim 内执行:
 :PlugUpdate
 :CocUpdate
+
+# tmux 内执行(重载 tmux 配置):
+tmux source-file ~/.tmux.conf
+
+# zsh 配置更新后:
+exec zsh
 ```
 
 ## 常见问题
@@ -163,3 +231,5 @@ git -C ~/vim-conf pull          # 如果用了软链接
 - **`CocCommand explorer` 报错**：需要先 `:CocInstall coc-explorer`。
 - **C/C++ 补全不可用**：确认 `clangd` 在 PATH 中。
 - **无法和系统剪贴板互通**：确认 `vim --version | grep +clipboard` 有输出；Linux 上安装 vim-gtk3。
+- **zsh 没进入 vi 模式**：确认 `.oh-my-zsh/custom/plugins/zsh-vi-mode` 存在且 `~/.zshrc` 的 plugins 列表包含 `zsh-vi-mode`，然后 `exec zsh`。
+- **`ciw`/`diw` 没反应**：先按 `Esc` 确保在 normal 模式（光标会变成竖线/方块提示），文本对象只在该模式生效。

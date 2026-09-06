@@ -1,0 +1,4 @@
+# Vim swap/backup
+*.swp
+*.swo
+*~

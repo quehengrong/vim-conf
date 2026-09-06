@@ -1,6 +1,6 @@
 # vim-conf
 
-基于 [vim-plug](https://github.com/junegunn/vim-plug) + [coc.nvim](https://github.com/neoclide/coc.nvim) 的个人 Vim 配置，提供代码补全、诊断、跳转、文件模糊搜索和文件树等功能。
+基于 [vim-plug](https://github.com/junegunn/vim-plug) + [coc.nvim](https://github.com/neoclide/coc.nvim) 的个人 Vim 配置，提供代码补全、诊断、跳转、代码片段、文件模糊搜索、Git 集成和文件树等功能。
 
 > 注意：只是把 `.vimrc` 拷到另一台机器**不够**。真正完整的配置由四部分组成：本仓库的配置文件 + vim-plug + vim-plug 插件 + coc 扩展 + 系统级命令，下面按顺序操作即可。
 
@@ -14,10 +14,10 @@
 
 ## 环境要求
 
-- Vim 9（或 >= 8.2 且支持 `<Cmd>`）或 Neovim
+- Vim 9（或 >= 8.2 且支持 `<Cmd>`）或 Neovim；建议带 `+clipboard` 的构建（见下方剪贴板说明）
 - `git`、`curl`（安装 vim-plug / 插件时需要）
 - Node.js >= 18（coc.nvim 及其扩展的运行环境）
-- `clangd`（C/C++ 补全/诊断，路径见 `.vim/coc-settings.json`）
+- `clangd` 在 PATH 中（C/C++ 补全/诊断）
 - `rg`（ripgrep，`:Rg` 与 coc-fzf-preview 的预览依赖它）
 - Python 3（使用 coc-pyright 编写 Python 时需要）
 
@@ -54,7 +54,23 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
   https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ```
 
-### 4. 安装 Vim 插件
+### 4. 启用系统剪贴板（仅 Linux 需要）
+
+检查当前 Vim 是否支持剪贴板：
+
+```bash
+vim --version | grep +clipboard
+```
+
+没有输出则安装带剪贴板支持的构建：
+
+```bash
+sudo apt-get install -y vim-gtk3
+```
+
+安装后重新打开 Vim，`.vimrc` 会自动执行 `set clipboard=unnamedplus`，Vim 内外复制粘贴互通。
+
+### 5. 安装 Vim 插件
 
 打开 Vim 并执行：
 
@@ -64,13 +80,13 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 
 插件列表里的 `junegunn/fzf` 会在安装后自动编译到 `~/.fzf`（post-update hook），不需要额外安装 fzf。
 
-### 5. 安装 coc 扩展
+### 6. 安装 coc 扩展
 
 ```vim
-:CocInstall -sync coc-clangd coc-json coc-tsserver coc-pyright coc-pairs coc-explorer coc-fzf-preview
+:CocInstall -sync coc-clangd coc-json coc-tsserver coc-pyright coc-pairs coc-explorer coc-fzf-preview coc-snippets https://github.com/rafamadriz/friendly-snippets@main
 ```
 
-重启 Vim 即可使用。
+重启 Vim 即可使用。`coc-python` 已弃用，不再安装，Python 使用 coc-pyright。
 
 ## 常用按键
 
@@ -78,7 +94,7 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 
 | 模式 | 按键 | 功能 |
 | --- | --- | --- |
-| 插入 | `Tab` | 触发/下一个补全项 |
+| 插入 | `Tab` | 补全菜单可见时选下一项；否则展开/跳转代码片段；最后回退为插入 Tab/刷新补全 |
 | 插入 | `Shift-Tab` | 上一个补全项 |
 | 插入 | `Enter` | 补全菜单可见时确认选中项，否则正常换行 |
 | 普通 | `[g` / `]g` | 上一条/下一条诊断 |
@@ -88,16 +104,22 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 | 普通 | `<leader>rn` | 符号重命名 |
 | 普通 | `<leader>f` | fzf 模糊搜索文件（`:Files`） |
 | 普通 | `<leader>g` | fzf 内容搜索（`:Rg`） |
+| 普通 | `<leader>b` | 切换已打开 buffer（`:Buffers`） |
+| 普通 | `<leader>h` | 打开命令历史（`:History`） |
+| 普通 | `s` / `S` | vim-sneak 快速跳转（按两字符后跳转） |
+| 普通/可视 | `gA` | vim-easy-align 对齐（避开内置 `ga`） |
 | 普通 | `<space>e` | coc-explorer 文件树 |
+| 普通 | `ys`/`cs`/`ds` | vim-surround 增删改环绕符号 |
+| 普通 | `gcc` | vim-commentary 注释/取消注释 |
+| 普通 | `:G status` / `:G blame` | vim-fugitive Git 操作 |
 
-另外光标悬停时会自动高亮当前符号及其引用；`:NERDTreeToggle` 也可按需打开 NERDTree 文件树。
+光标悬停时会自动高亮当前符号及其引用。进入 snippet 后，片段内占位符跳转由 `Tab` 完成。
 
-## 需要按机器调整的地方
+## 跨机器注意事项
 
-`.vim/coc-settings.json` 里写死了 `"clangd.path": "/usr/bin/clangd"`。换机器后先用 `which clangd` 确认实际路径：
-
-- Ubuntu：`sudo apt install clangd`，通常就是 `/usr/bin/clangd`；
-- macOS / 其他发行版：若路径不同，请把 `clangd.path` 改成 `which clangd` 的输出。
+- **clangd**：`coc-settings.json` 不再写死路径，coc-clangd 会从 PATH 中查找 `clangd`。换机器后确认 `which clangd` 有输出即可。
+- **剪贴板**：Linux 需要 Vim 带 `+clipboard`（建议 vim-gtk3），macOS 自带支持。
+- **代码片段**：需要同时安装 `coc-snippets` 和 `friendly-snippets`（coc 扩展方式），见第 6 步。
 
 ## 更新
 
@@ -111,6 +133,8 @@ git -C ~/vim-conf pull          # 如果用了软链接
 ## 常见问题
 
 - **Tab / 补全没反应**：检查 `:CocInfo`，确认 Node.js 版本 >= 18 且 coc 扩展安装成功。
+- **片段不出现**：执行 `:CocCommand workspace.showOutput snippets`，确认 coc-snippets 与 friendly-snippets 已安装。
 - **`E492: Not an editor command: Files`**：说明 `junegunn/fzf.vim` 未安装，重新执行 `:PlugInstall`。
 - **`CocCommand explorer` 报错**：需要先 `:CocInstall coc-explorer`。
-- **C/C++ 补全不可用**：确认 `clangd` 已安装，且路径与 `.vim/coc-settings.json` 中的 `clangd.path` 一致。
+- **C/C++ 补全不可用**：确认 `clangd` 在 PATH 中。
+- **无法和系统剪贴板互通**：确认 `vim --version | grep +clipboard` 有输出；Linux 上安装 vim-gtk3。

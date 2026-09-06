@@ -1,7 +1,17 @@
 {
-  "clangd.path": "/usr/bin/clangd",
   "suggest.noselect": false,
   "suggest.enablePreselect": true,
   "codeLens.enable": true,
-  "coc.preferences.formatOnSave": true
+  "coc.preferences.formatOnSave": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "c",
+    "cpp",
+    "objc",
+    "python",
+    "typescript",
+    "javascript",
+    "typescriptreact",
+    "javascriptreact",
+    "json"
+  ]
 }

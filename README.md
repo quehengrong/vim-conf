@@ -106,14 +106,39 @@ sudo apt-get install -y vim-gtk3
 | 普通 | `<leader>g` | fzf 内容搜索（`:Rg`） |
 | 普通 | `<leader>b` | 切换已打开 buffer（`:Buffers`） |
 | 普通 | `<leader>h` | 打开命令历史（`:History`） |
+| 普通 | `<leader>F` | 搜索 Git 跟踪的文件（`:GFiles`） |
+| 普通 | `<leader>l` | 当前文件内行搜索（`:BLines`） |
+| 普通 | `<leader>a` | 对当前行应用 code action（重构等） |
+| 普通 | `<leader>qf` | 自动修复当前行可修复的问题 |
+| 普通 | `<leader>d` | 打开诊断列表（`:CocList diagnostics`） |
+| 普通 | `<leader>o` | 打开当前文件大纲（`:CocList outline`） |
+| 普通 | `<leader>s` | 打开代码片段列表（`:CocList snippets`） |
 | 普通 | `s` / `S` | vim-sneak 快速跳转（按两字符后跳转） |
 | 普通/可视 | `gA` | vim-easy-align 对齐（避开内置 `ga`） |
 | 普通 | `<space>e` | coc-explorer 文件树 |
 | 普通 | `ys`/`cs`/`ds` | vim-surround 增删改环绕符号 |
 | 普通 | `gcc` | vim-commentary 注释/取消注释 |
 | 普通 | `:G status` / `:G blame` | vim-fugitive Git 操作 |
+| 普通 | `]c` / `[c` | vim-gitgutter 跳到下一处/上一处改动 |
+| 普通 | `Ctrl-h/j/k/l` | Vim 内切换分屏，到边缘时无缝切到相邻 tmux pane |
+| 普通 | `Ctrl-\` | 在 Vim split 与 tmux pane 的上一位置间往返 |
 
 光标悬停时会自动高亮当前符号及其引用。进入 snippet 后，片段内占位符跳转由 `Tab` 完成。
+
+## tmux 联动
+
+如果同时使用 tmux，为了让 `Ctrl-h/j/k/l` 在 Vim 分屏和 tmux pane 之间无缝移动，需要把 vim-tmux-navigator 的配置加进 `~/.tmux.conf`（gpakosz/.tmux 用户加在 `~/.tmux.conf.local` 的 `# "$@"` 一行之前）：
+
+```tmux
+is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+bind-key -n 'C-h' if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
+bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
+bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
+bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
+bind-key -n 'C-\' if-shell "$is_vim" 'send-keys C-\\'  'select-pane -l'
+```
+
+改完后在当前 tmux 会话里执行 `tmux source-file ~/.tmux.conf` 即可生效。
 
 ## 跨机器注意事项
 

@@ -34,12 +34,16 @@ Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 " Git
 Plug 'tpope/vim-fugitive'
+" 行级 Git 改动(增删改标记/hunk 预览)
+Plug 'airblade/vim-gitgutter'
 " 编辑增强
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 " 快速跳转
 Plug 'justinmk/vim-sneak'
+" Vim 与 tmux 分屏联动(C-h/j/k/l)
+Plug 'christoomey/vim-tmux-navigator'
 " 状态栏
 Plug 'itchyny/lightline.vim'
 
@@ -79,6 +83,14 @@ nmap <silent><nowait> gi <Plug>(coc-implementation)
 nmap <silent><nowait> gr <Plug>(coc-references)
 nnoremap <silent> K :call ShowDocumentation()<CR>
 nmap <leader>rn <Plug>(coc-rename)
+" 代码动作/自动修复
+nmap <silent> <leader>a <Plug>(coc-codeaction)
+xmap <silent> <leader>a <Plug>(coc-codeaction-selected)
+nmap <silent> <leader>qf <Plug>(coc-fix-current)
+" coc 列表(诊断/大纲/片段)
+nnoremap <leader>d :CocList diagnostics<CR>
+nnoremap <leader>o :CocList outline<CR>
+nnoremap <leader>s :CocList snippets<CR>
 
 function! ShowDocumentation()
   if CocAction('hasProvider', 'hover')
@@ -96,6 +108,8 @@ nnoremap <leader>f :Files<CR>
 nnoremap <leader>g :Rg<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>h :History<CR>
+nnoremap <leader>F :GFiles<CR>
+nnoremap <leader>l :BLines<CR>
 
 " ==== 文件树 (coc-explorer) ====
 nmap <space>e <Cmd>CocCommand explorer<CR>

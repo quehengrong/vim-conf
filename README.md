@@ -1,6 +1,6 @@
 # vim-conf
 
-个人开发环境配置仓库，覆盖 **Vim + tmux + Zsh** 三个常用工具，克隆后按 README 操作即可在另一台机器上复用同一套配置。
+个人开发环境配置仓库，覆盖 **Vim + tmux + Zsh + Git** 四个常用工具，克隆后按 README 操作即可在另一台机器上复用同一套配置。
 
 > 注意：本仓库只保存“你自己的配置文件”，第三方框架和插件（vim-plug、oh-my-zsh、gpakosz/.tmux、coc 扩展等）仍需要在目标机器上安装，README 已给出对应命令。
 
@@ -13,6 +13,7 @@
 | `tmux/.tmux.conf.local` | tmux 自定义配置（基于 gpakosz/.tmux，含 vim-tmux-navigator 联动） |
 | `zsh/.zshrc` | zsh + oh-my-zsh 配置（含 zsh-vi-mode） |
 | `zsh/.p10k.zsh` | Powerlevel10k 主题配置 |
+| `git/.gitconfig` | Git 全局配置（身份、默认分支、别名） |
 | `README.md` | 本说明 |
 
 ## 环境要求
@@ -188,6 +189,26 @@ exec zsh
 - `vv` 用外部编辑器编辑整条命令行，`gx` 打开光标下的 URL/路径。
 
 > 依赖提醒：`.zshrc` 里的 `ls` 别名需要 `lsd`，`fd` 别名需要 `fdfind`，`autojump` 插件需要对应二进制；新机器缺哪个工具就装哪个，或删掉对应行。
+
+## Git 配置
+
+仓库保存 `git/.gitconfig`，作为全局 `~/.gitconfig` 的唯一配置源：
+
+```bash
+ln -sf ~/vim-conf/git/.gitconfig ~/.gitconfig
+git config --global --list   # 验证
+```
+
+包含内容：Git 身份、默认分支 `main`、`pull --rebase`、`push.autoSetupRemote` 和常用别名。
+
+常用别名速查：
+
+- `git st`：简洁状态；
+- `git lg`：图形化提交日志；
+- `git co`：切换分支；
+- `git br`：查看分支及跟踪关系；
+- `git unstage`：取消暂存；`git undo`：软撤销最近一次提交；
+- `git amend`：修改最近一次提交信息。
 
 ## 跨机器注意事项
 

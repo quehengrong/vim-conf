@@ -131,11 +131,3 @@ if [[ -d "$HOME/.fzf/bin" ]]; then
   export PATH="$HOME/.fzf/bin:$PATH"
 fi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# WSL 下自动启用代理(仅 Windows Subsystem for Linux 生效)
-if [[ -r /proc/version ]] && grep -qi microsoft /proc/version && [[ -r /etc/resolv.conf ]]; then
-  host_ip=$(grep '^nameserver' /etc/resolv.conf | head -n1 | cut -d' ' -f2)
-  if [[ -n "$host_ip" ]]; then
-    export ALL_PROXY="http://$host_ip:7897"
-  fi
-fi

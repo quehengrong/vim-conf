@@ -131,3 +131,8 @@ if [[ -d "$HOME/.fzf/bin" ]]; then
   export PATH="$HOME/.fzf/bin:$PATH"
 fi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Show system information whenever a new interactive shell starts.
+if command -v fastfetch >/dev/null 2>&1; then
+  fastfetch
+fi

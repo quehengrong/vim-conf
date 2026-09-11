@@ -123,6 +123,9 @@ sudo apt-get install -y vim-gtk3
 | 普通 | `s` / `S` | vim-sneak 快速跳转（按两字符后跳转） |
 | 普通/可视 | `gA` | vim-easy-align 对齐（避开内置 `ga`） |
 | 普通 | `<space>e` | coc-explorer 文件树 |
+| 普通 | `<leader>t` | 打开/关闭底部终端（再按一次关闭，shell 保持运行） |
+| 终端 | `Esc` | 从终端回到普通模式（随后可用 `<leader>t` 关闭） |
+| 终端 | `Ctrl-t` | 直接关闭（隐藏）终端窗口 |
 | 普通 | `ys`/`cs`/`ds` | vim-surround 增删改环绕符号 |
 | 普通 | `gcc` | vim-commentary 注释/取消注释 |
 | 普通 | `:G status` / `:G blame` | vim-fugitive Git 操作 |
@@ -131,6 +134,8 @@ sudo apt-get install -y vim-gtk3
 | 普通 | `Ctrl-\` | 在 Vim split 与 tmux pane 的上一位置间往返 |
 
 光标悬停时会自动高亮当前符号及其引用。进入 snippet 后，片段内占位符跳转由 `Tab` 完成。
+
+`<leader>t` 打开的是底部终端，光标会直接落在终端里，可以马上敲命令。在终端里按 `Esc` 回到普通模式后，再按 `<leader>t`（或 `Ctrl-t`）即可关闭窗口。关闭只是把终端隐藏到后台，shell 进程继续运行；下次打开会回到同一个 shell，历史记录都还在。如果在终端里输入了 `exit`，下次打开会自动换一个新 shell。
 
 ## tmux 配置
 

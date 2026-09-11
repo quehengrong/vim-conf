@@ -114,6 +114,56 @@ nnoremap <leader>l :BLines<CR>
 " ==== 文件树 (coc-explorer) ====
 nmap <space>e <Cmd>CocCommand explorer<CR>
 
+" ==== 终端开关 (<leader>t) ====
+let s:term_bufnr = -1
+
+" 返回终端 buffer 所在窗口号;没有可见的终端时返回 -1
+function! s:TermWin() abort
+  if s:term_bufnr < 0 || !bufexists(s:term_bufnr)
+    return -1
+  endif
+  let l:wins = win_findbuf(s:term_bufnr)
+  return empty(l:wins) ? -1 : l:wins[0]
+endfunction
+
+function! ToggleTerm() abort
+  " 终端已显示:关闭窗口(进程留在后台,重新打开时历史仍在)
+  let l:win = s:TermWin()
+  if l:win > 0
+    if winnr('$') > 1
+      let l:nr = win_id2win(l:win)
+      if l:nr > 0
+        execute l:nr . 'close!'
+      endif
+    else
+      enew
+    endif
+    return
+  endif
+
+  " 旧终端还活着就复用(保留 shell 历史),已经退出(如输入了 exit)则清掉重开
+  if s:term_bufnr > 0 && bufexists(s:term_bufnr) && bufloaded(s:term_bufnr)
+    if term_getstatus(s:term_bufnr) =~# 'running'
+      execute 'botright sbuffer ' . s:term_bufnr
+      setlocal nonumber norelativenumber signcolumn=no
+      " sbuffer 只把 buffer 放回窗口,要再进 Terminal-Job 模式才能直接输入
+      call feedkeys('i', 'n')
+      return
+    endif
+    execute 'silent! bwipeout! ' . s:term_bufnr
+  endif
+
+  botright terminal
+  let s:term_bufnr = bufnr('%')
+  setlocal nonumber norelativenumber signcolumn=no
+endfunction
+
+nnoremap <silent> <leader>t :call ToggleTerm()<CR>
+" 终端模式下 Esc 回到普通模式(再按 <leader>t 即可关闭)
+tnoremap <silent> <Esc> <C-\><C-n>
+" 终端模式下 <C-t> 直接关闭/隐藏终端
+tnoremap <silent> <C-t> <C-\><C-n>:call ToggleTerm()<CR>
+
 " ==== 状态栏 (lightline) ====
 let g:lightline = {
       \ 'colorscheme': 'wombat',

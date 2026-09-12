@@ -1,8 +1,8 @@
 # vim-conf
 
-个人开发环境配置仓库，覆盖 **Vim + tmux + Zsh + Git** 四个常用工具，克隆后按 README 操作即可在另一台机器上复用同一套配置。
+个人 **Vim** 配置仓库，克隆后按 README 操作即可在另一台机器上复用同一套配置。
 
-> 注意：本仓库只保存“你自己的配置文件”，第三方框架和插件（vim-plug、oh-my-zsh、gpakosz/.tmux、coc 扩展等）仍需要在目标机器上安装，README 已给出对应命令。
+> 注意：本仓库只保存“你自己的配置文件”，第三方框架和插件（vim-plug、coc 扩展等）仍需要在目标机器上安装，README 已给出对应命令。
 
 ## 仓库结构
 
@@ -10,10 +10,6 @@
 | --- | --- |
 | `.vimrc` | Vim 主配置（按键、插件列表、coc 集成） |
 | `.vim/coc-settings.json` | coc.nvim 与语言服务器配置 |
-| `tmux/.tmux.conf.local` | tmux 自定义配置（基于 gpakosz/.tmux，含 vim-tmux-navigator 联动） |
-| `zsh/.zshrc` | zsh + oh-my-zsh 配置（含 zsh-vi-mode） |
-| `zsh/.p10k.zsh` | Powerlevel10k 主题配置 |
-| `git/.gitconfig` | Git 全局配置（身份、默认分支、别名） |
 | `README.md` | 本说明 |
 
 ## 环境要求
@@ -24,11 +20,8 @@
 - `clangd` 在 PATH 中（C/C++ 补全/诊断）
 - `rg`（ripgrep，`:Rg` 与 coc-fzf-preview 的预览依赖它）
 - Python 3（使用 coc-pyright 编写 Python 时需要）
-- zsh + [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) + [Powerlevel10k](https://github.com/romkatv/powerlevel10k)（zsh 配置需要）
-- tmux（>= 2.4）与 [gpakosz/.tmux](https://github.com/gpakosz/.tmux)（tmux 配置需要）
-- 可选工具：`lsd`（ls 别名）、`fdfind`（fd 别名）、`autojump`（zshrc 的 autojump 插件用到）
 
-## Vim 快速安装
+## 快速安装
 
 ### 1. 获取本仓库
 
@@ -37,7 +30,7 @@ git clone https://github.com/quehengrong/vim-conf.git
 cd vim-conf
 ```
 
-### 2. 安装 Vim 配置文件
+### 2. 安装配置文件
 
 推荐用软链接，之后 `git pull` 即可同步更新：
 
@@ -137,85 +130,9 @@ sudo apt-get install -y vim-gtk3
 
 `<leader>t` 打开的是底部终端，光标会直接落在终端里，可以马上敲命令。在终端里按 `Esc` 回到普通模式后，再按 `<leader>t`（或 `Ctrl-t`）即可关闭窗口。关闭只是把终端隐藏到后台，shell 进程继续运行；下次打开会回到同一个 shell，历史记录都还在。如果在终端里输入了 `exit`，下次打开会自动换一个新 shell。
 
-## tmux 配置
+## tmux 联动（可选）
 
-仓库里只保存 tmux 的自定义部分 `tmux/.tmux.conf.local`，主题基础仍使用 [gpakosz/.tmux](https://github.com/gpakosz/.tmux)。
-
-首次安装：
-
-```bash
-git clone https://github.com/gpakosz/.tmux.git ~/.tmux
-ln -sf ~/.tmux/.tmux.conf ~/.tmux.conf
-ln -sf ~/vim-conf/tmux/.tmux.conf.local ~/.tmux.conf.local
-tmux source-file ~/.tmux.conf
-```
-
-`Ctrl-h/j/k/l` 在 Vim 分屏和 tmux pane 之间无缝切换所需的两侧配置已分别包含在 `.vimrc` 插件与 `.tmux.conf.local` 中，无需再手工加绑定。
-
-常用 tmux 按键：
-
-- `Ctrl-b` 或 `Ctrl-a` 为 prefix；
-- `Ctrl-b -`：上下分屏；`Ctrl-b _`：左右分屏；
-- `Ctrl-b x`：关闭当前 pane；`Ctrl-b &`：关闭整个窗口；
-- `Ctrl-b h/j/k/l`：在 pane 之间移动；`Ctrl-b Ctrl-h/l`：切换上一个/下一个窗口。
-
-## Zsh 配置
-
-仓库里保存 `zsh/.zshrc` 与 `zsh/.p10k.zsh`（Powerlevel10k 主题配置）。
-
-首次安装（假设已安装 zsh 与 oh-my-zsh）：
-
-```bash
-# 1. 软链接配置文件
-ln -sf ~/vim-conf/zsh/.zshrc ~/.zshrc
-ln -sf ~/vim-conf/zsh/.p10k.zsh ~/.p10k.zsh
-
-# 2. 安装 Powerlevel10k 主题
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
-  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
-
-# 3. 安装 .zshrc 用到的自定义插件
-git clone https://github.com/zsh-users/zsh-autosuggestions \
-  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
-git clone https://github.com/zsh-users/zsh-syntax-highlighting \
-  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
-git clone https://github.com/jeffreytse/zsh-vi-mode \
-  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-vi-mode"
-
-# 4. 重启 shell
-exec zsh
-```
-
-`zsh-vi-mode` 让命令行编辑接近 Vim：
-
-- `Esc` 进入 normal 模式，`i` 返回 insert 模式；
-- 支持 `b`/`w`/`e`、`ciw`/`diw`/`caw` 等文本对象；
-- 可视模式选择文本、`yy`/`p` 复制粘贴、`.` 重复上次操作；
-- `vv` 用外部编辑器编辑整条命令行，`gx` 打开光标下的 URL/路径。
-
-> 依赖提醒：`.zshrc` 里的 `ls` 别名需要 `lsd`，`fd` 别名需要 `fdfind`，`autojump` 插件需要对应二进制；新机器缺哪个工具就装哪个，或删掉对应行。
-
-## Git 配置
-
-仓库保存 `git/.gitconfig`，作为全局 `~/.gitconfig` 的唯一配置源：
-
-```bash
-ln -sf ~/vim-conf/git/.gitconfig ~/.gitconfig
-git config --global --list   # 验证
-```
-
-包含内容：Git 身份、默认分支 `main`、`pull --rebase`、`push.autoSetupRemote` 和常用别名。
-
-常用别名速查：
-
-- `git st`：简洁状态；
-- `git lg`：图形化提交日志；
-- `git co`：切换分支；
-- `git br`：查看分支及跟踪关系；
-- `git unstage`：取消暂存；`git undo`：软撤销最近一次提交；
-- `git amend`：修改最近一次提交信息。
-
-## 跨机器注意事项
+`.vimrc` 里的 `christoomey/vim-tmux-navigator` 只负责 Vim 这一侧。如果想让 `Ctrl-h/j/k/l` 在 Vim 分屏和 tmux pane 之间无缝切换，需要在你自己的 `~/.tmux.conf`（本仓库不管理）里加上对应绑定：
 
 ```tmux
 is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
@@ -226,7 +143,7 @@ bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
 bind-key -n 'C-\' if-shell "$is_vim" 'send-keys C-\\'  'select-pane -l'
 ```
 
-改完后在当前 tmux 会话里执行 `tmux source-file ~/.tmux.conf` 即可生效。
+改完后执行 `tmux source-file ~/.tmux.conf` 即可生效。不用 tmux 的话可以直接从 `.vimrc` 里删掉这个插件。
 
 ## 跨机器注意事项
 
@@ -238,15 +155,10 @@ bind-key -n 'C-\' if-shell "$is_vim" 'send-keys C-\\'  'select-pane -l'
 
 ```bash
 git -C ~/vim-conf pull          # 如果用了软链接
+
 # Vim 内执行:
 :PlugUpdate
 :CocUpdate
-
-# tmux 内执行(重载 tmux 配置):
-tmux source-file ~/.tmux.conf
-
-# zsh 配置更新后:
-exec zsh
 ```
 
 ## 常见问题
@@ -257,5 +169,3 @@ exec zsh
 - **`CocCommand explorer` 报错**：需要先 `:CocInstall coc-explorer`。
 - **C/C++ 补全不可用**：确认 `clangd` 在 PATH 中。
 - **无法和系统剪贴板互通**：确认 `vim --version | grep +clipboard` 有输出；Linux 上安装 vim-gtk3。
-- **zsh 没进入 vi 模式**：确认 `.oh-my-zsh/custom/plugins/zsh-vi-mode` 存在且 `~/.zshrc` 的 plugins 列表包含 `zsh-vi-mode`，然后 `exec zsh`。
-- **`ciw`/`diw` 没反应**：先按 `Esc` 确保在 normal 模式（光标会变成竖线/方块提示），文本对象只在该模式生效。

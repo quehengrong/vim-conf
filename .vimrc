@@ -24,7 +24,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " 配色
-Plug 'junegunn/seoul256.vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
 " 对齐
 Plug 'junegunn/vim-easy-align'
 " fzf 本体 + vim 封装(:Files / :Rg / :Buffers)
@@ -50,7 +50,11 @@ Plug 'itchyny/lightline.vim'
 call plug#end()
 
 " 配色需要在 plug#end() 之后加载
-silent! colorscheme seoul256
+" colorterm=0: 不让 dracula 自己画背景,直接透出终端的 dracula 背景色,
+" 这样 vim 内外底色完全一致(tmux 下没有真彩色,也不需要 termguicolors)
+let g:dracula_colorterm = 0
+set background=dark
+silent! colorscheme dracula
 
 " ==== 对齐 (vim-easy-align) ====
 " gA 避开 Vim 内置的 ga(查看字符编码)
@@ -166,7 +170,7 @@ tnoremap <silent> <C-t> <C-\><C-n>:call ToggleTerm()<CR>
 
 " ==== 状态栏 (lightline) ====
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'dracula',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]

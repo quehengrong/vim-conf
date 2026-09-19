@@ -1,5 +1,6 @@
 {
   "suggest.noselect": false,
+  "semanticTokens.enable": true,
   "suggest.enablePreselect": true,
   "codeLens.enable": true,
   "coc.preferences.formatOnSave": true,

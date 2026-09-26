@@ -40,6 +40,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
+" Python 代码折叠(从 def/class 行折,处理 docstring/装饰器/多行签名)
+Plug 'tmhedberg/SimpylFold'
 " 快速跳转
 Plug 'justinmk/vim-sneak'
 " Vim 与 tmux 分屏联动(C-h/j/k/l)
@@ -167,6 +169,36 @@ nnoremap <silent> <leader>t :call ToggleTerm()<CR>
 tnoremap <silent> <Esc> <C-\><C-n>
 " 终端模式下 <C-t> 直接关闭/隐藏终端
 tnoremap <silent> <C-t> <C-\><C-n>:call ToggleTerm()<CR>
+
+" ==== Python 代码折叠 (SimpylFold) ====
+" 折叠从 def/class 行开始,正确处理 docstring/装饰器/多行签名/嵌套
+let g:SimpylFold_fold_import = 0        " 不折叠 import 块
+let g:SimpylFold_docstring_preview = 1  " 单行签名的函数,折叠行显示 docstring 首行
+
+" 这里显式做一遍 SimpylFold 自带 ftplugin 的工作,不依赖各机器上 filetype plugin 是否开启
+function! s:PythonFoldSetup() abort
+  call SimpylFold#BufferInit()
+  " SimpylFold 用 indent()/缩进宽度推算层级,4 空格缩进必须配 4(与 Vim 自带 python ftplugin 一致)
+  setlocal expandtab shiftwidth=4 softtabstop=4
+  setlocal foldmethod=expr
+  setlocal foldexpr=SimpylFold#FoldExpr(v:lnum)
+  setlocal foldtext=foldtext()\ .\ SimpylFold#FoldText()
+  " 打开文件时不自动折叠:按 zc 折当前函数,zM 全折,zR 全展开;想打开即全折改成 0
+  setlocal foldlevel=99 foldcolumn=1
+  " SimpylFold 会缓存整份 buffer 的折叠信息,编辑后要让缓存失效
+  if !exists('b:SimpylFold_refresh')
+    let b:SimpylFold_refresh = 1
+    augroup PythonFoldRefresh
+      autocmd! * <buffer>
+      autocmd TextChanged,InsertLeave <buffer> call SimpylFold#Recache()
+    augroup END
+  endif
+endfunction
+
+augroup PythonFolding
+  autocmd!
+  autocmd FileType python call s:PythonFoldSetup()
+augroup END
 
 " ==== 状态栏 (lightline) ====
 let g:lightline = {

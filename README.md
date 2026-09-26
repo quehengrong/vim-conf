@@ -125,10 +125,27 @@ sudo apt-get install -y vim-gtk3
 | 普通 | `]c` / `[c` | vim-gitgutter 跳到下一处/上一处改动 |
 | 普通 | `Ctrl-h/j/k/l` | Vim 内切换分屏，到边缘时无缝切到相邻 tmux pane |
 | 普通 | `Ctrl-\` | 在 Vim split 与 tmux pane 的上一位置间往返 |
+| 普通 | `zc` / `za` | 折叠光标所在函数 / 开合当前折叠（Python，由 SimpylFold 提供） |
+| 普通 | `zM` / `zR` | 折叠全部 / 展开全部（`zj`/`zk` 在折叠之间跳转） |
 
 光标悬停时会自动高亮当前符号及其引用。进入 snippet 后，片段内占位符跳转由 `Tab` 完成。
 
 `<leader>t` 打开的是底部终端，光标会直接落在终端里，可以马上敲命令。在终端里按 `Esc` 回到普通模式后，再按 `<leader>t`（或 `Ctrl-t`）即可关闭窗口。关闭只是把终端隐藏到后台，shell 进程继续运行；下次打开会回到同一个 shell，历史记录都还在。如果在终端里输入了 `exit`，下次打开会自动换一个新 shell。
+
+## Python 代码折叠
+
+Python 的折叠由 `tmhedberg/SimpylFold` 提供。之所以不用 Vim 自带的两条路：这个 Vim 的 `syntax/python.vim` 没有任何 fold 定义（`foldmethod=syntax` 对 Python 无效），而 pyright 也不提供 `foldingRange`（`CocAction('fold')` 在 Python 上不可用，C/C++ 的 clangd 才支持）。
+
+| 行为 | 配置 |
+| --- | --- |
+| 折叠方式 | `foldmethod=expr` + `foldexpr=SimpylFold#FoldExpr(v:lnum)`，折叠从 `def`/`class` 行开始 |
+| 打开文件时 | 不自动折叠（`foldlevel=99`），按 `zM` 可一次全部折起；想打开即全折就把 `foldlevel` 改成 `0` |
+| 折叠行显示 | 单行签名的函数显示 docstring 首行（`g:SimpylFold_docstring_preview = 1`），多行签名显示 `def ...` 行；`import` 块不折叠 |
+| 缩进设置 | Python buffer 固定 `expandtab shiftwidth=4 softtabstop=4`：SimpylFold 靠缩进宽度推算层级，不匹配就会折不出来 |
+
+常用按键：`zc` 折当前函数、`za` 开合、`zo` 展开、`zM` / `zR` 全折 / 全展、`zj` / `zk` 在折叠之间跳转、`zd` 删除当前折叠。
+
+`.vimrc` 里的 `s:PythonFoldSetup()` 显式做了插件自带 ftplugin 的那套设置（`BufferInit`+`foldexpr`+`foldtext`+编辑后 `Recache`），所以不依赖机器上 `filetype plugin` 是否开启。首次使用前需要执行 `:PlugInstall` 安装插件。
 
 ## tmux 联动（可选）
 

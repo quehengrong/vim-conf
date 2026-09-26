@@ -127,6 +127,8 @@ sudo apt-get install -y vim-gtk3
 | 普通 | `Ctrl-\` | 在 Vim split 与 tmux pane 的上一位置间往返 |
 | 普通 | `zc` / `za` | 折叠光标所在函数 / 开合当前折叠（Python，由 SimpylFold 提供） |
 | 普通 | `zM` / `zR` | 折叠全部 / 展开全部（`zj`/`zk` 在折叠之间跳转） |
+| 可视 | `<leader>ca` / `<leader>cc` | 把选中的行丢给 codex / claude 分析（输入问题） |
+| 可视 | `<leader>ce` / `<leader>cr` | 选中代码让 codex 解释找 bug / 让 claude 做代码评审 |
 
 光标悬停时会自动高亮当前符号及其引用。进入 snippet 后，片段内占位符跳转由 `Tab` 完成。
 
@@ -146,6 +148,42 @@ Python 的折叠由 `tmhedberg/SimpylFold` 提供。之所以不用 Vim 自带�
 常用按键：`zc` 折当前函数、`za` 开合、`zo` 展开、`zM` / `zR` 全折 / 全展、`zj` / `zk` 在折叠之间跳转、`zd` 删除当前折叠。
 
 `.vimrc` 里的 `s:PythonFoldSetup()` 显式做了插件自带 ftplugin 的那套设置（`BufferInit`+`foldexpr`+`foldtext`+编辑后 `Recache`），所以不依赖机器上 `filetype plugin` 是否开启。首次使用前需要执行 `:PlugInstall` 安装插件。
+
+## 把选中的代码丢给 codex / claude 分析
+
+可视模式选中若干行，按快捷键直接问 CLI agent，回答通过 `job_start()` 异步流式输出到下方新窗口（markdown），期间 Vim 不卡。答案窗口里按 `q` 关闭；agent 的执行日志带 `»` 前缀，`--- exit N ---` 表示结束。
+
+| 按键（可视模式） | 作用 |
+| --- | --- |
+| `<leader>ca` | 问 codex（在输入框里写问题） |
+| `<leader>cc` | 问 claude（在输入框里写问题） |
+| `<leader>ce` | 让 codex 解释这段代码、指出 bug 和风险 |
+| `<leader>cr` | 让 claude 以代码评审视角列问题清单 |
+
+依赖三件事：
+
+1. `~/.local/bin/vim-agent` 指向仓库里的 `bin/vim-agent`：
+
+   ```bash
+   mkdir -p ~/.local/bin
+   ln -sf "$PWD/bin/vim-agent" ~/.local/bin/vim-agent
+   ```
+
+2. codex 侧不用额外配置，读 `~/.codex/config.toml` 里的 provider；调用形式是 `codex exec -s read-only -C <当前目录>`（只读，不会改你的代码）。
+
+3. claude 侧需要 `~/.config/vim-agent/env.sh`（权限 600）提供 `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` / `ANTHROPIC_MODEL`（以及需要时的 `https_proxy`）。原因是 Vim 的 job 起的是**非交互 shell，不会读 shell 里的 alias**；把密钥放这个文件而不是 `.vimrc`，也避免它进仓库：
+
+   ```bash
+   mkdir -p ~/.config/vim-agent
+   cat > ~/.config/vim-agent/env.sh <<'EOF'
+   export ANTHROPIC_BASE_URL="https://..."
+   export ANTHROPIC_AUTH_TOKEN="sk-..."
+   export ANTHROPIC_MODEL="..."
+   EOF
+   chmod 600 ~/.config/vim-agent/env.sh
+   ```
+
+传上下文的方式是「`文件:起止行` + 选中的代码片段」，工作目录通过 `VIM_AGENT_CWD` 设成 Vim 当前目录，所以 agent 还能自己读整个文件/仓库（codex 用 `-s read-only`，claude 只放开 `Read`/`Grep`/`Glob`）。
 
 ## tmux 联动（可选）
 

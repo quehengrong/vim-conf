@@ -200,6 +200,94 @@ augroup PythonFolding
   autocmd FileType python call s:PythonFoldSetup()
 augroup END
 
+" ==== 选中代码丢给 codex / claude 分析 ====
+" 依赖 ~/.local/bin/vim-agent(仓库里的 bin/vim-agent),claude 的密钥放在
+" ~/.config/vim-agent/env.sh,不进仓库
+
+function! s:AgentAppend(buf, prefix, ch, msg) abort
+  if !bufexists(a:buf)
+    return
+  endif
+  let l:lines = split(a:msg, "\n", 1)
+  if !empty(a:prefix)
+    call map(l:lines, {_, v -> a:prefix . v})
+  endif
+  call setbufvar(a:buf, '&modifiable', 1)
+  call appendbufline(a:buf, '$', l:lines)
+  let l:win = bufwinid(a:buf)
+  if l:win > 0
+    call win_execute(l:win, 'silent! normal! G')
+  endif
+endfunction
+
+function! s:AgentExit(buf, tmp, job, status) abort
+  call s:AgentAppend(a:buf, '', 0, printf('--- exit %d ---', a:status))
+  call delete(a:tmp)
+endfunction
+
+" 取要发送的行范围: 优先用最近的选取(可视模式退出后 '< '> 仍然有效,
+" 鼠标拖选也算),光标在选取范围内才认,避免发出去的是很久以前的选区
+function! s:AgentTarget() abort
+  let l:l1 = line("'<")
+  let l:l2 = line("'>")
+  if l:l1 > 0 && l:l2 >= l:l1 && line('.') >= l:l1 && line('.') <= l:l2
+    return [l:l1, l:l2]
+  endif
+  return [line('.'), line('.')]
+endfunction
+
+function! s:AgentRun(agent, prompt) abort
+  let [l:l1, l:l2] = s:AgentTarget()
+  let l:loc = printf('%s:%d-%d', expand('%:p'), l:l1, l:l2)
+  let l:payload = printf(
+        \ "文件: %s\n\n```\n%s\n```\n\n%s\n\n(用简体中文回答,直接给结论,不要寒暄)",
+        \ l:loc, join(getline(l:l1, l:l2), "\n"), a:prompt)
+
+  " 结果窗口:下方新分屏,流式追加
+  botright new
+  setlocal buftype=nofile bufhidden=wipe noswapfile nospell filetype=markdown
+  nnoremap <silent> <buffer> q :q<CR>
+  let l:buf = bufnr('%')
+  call setline(1, [printf('# %s · %s', a:agent, l:loc), '', '> ' . a:prompt, '', ''])
+
+  let l:tmp = tempname()
+  " 注意: 不能 writefile([整个字符串]) —— Vim 会把字符串里的换行写成 NUL 字节,
+  " 必须按行拆开后写入,子进程读到的才是真正的换行
+  call writefile(split(l:payload, "\n", 1), l:tmp)
+  call job_start(['vim-agent', a:agent], {
+        \ 'in_io': 'file', 'in_name': l:tmp,
+        \ 'out_cb': function('s:AgentAppend', [l:buf, '']),
+        \ 'err_cb': function('s:AgentAppend', [l:buf, '» ']),
+        \ 'exit_cb': function('s:AgentExit', [l:buf, l:tmp]),
+        \ 'env': {'VIM_AGENT_CWD': getcwd()},
+        \ })
+endfunction
+
+"   <leader>ca  问 codex(输入问题)      <leader>cc  问 claude(输入问题)
+"   <leader>ce  让 codex 解释找 bug    <leader>cr  让 claude 做代码评审
+" 可视模式: 用选中的行; normal 模式: 光标在最近一次选取内就用那个选取,否则用当前行
+function! s:AgentDispatch(key) abort
+  " 注意: 不能把 input() 写在字典字面量里 —— 那样两个 input() 都会被执行
+  if a:key ==# 'a'
+    let [l:agent, l:prompt] = ['codex', input('问 codex: ')]
+  elseif a:key ==# 'c'
+    let [l:agent, l:prompt] = ['claude', input('问 claude: ')]
+  elseif a:key ==# 'e'
+    let [l:agent, l:prompt] = ['codex', '解释这段代码在做什么,指出潜在 bug 和风险点']
+  else
+    let [l:agent, l:prompt] = ['claude', '以代码评审的视角列出问题清单和改进建议']
+  endif
+  if empty(l:prompt)                    " input() 按 Esc 取消
+    return
+  endif
+  call s:AgentRun(l:agent, l:prompt)
+endfunction
+
+for s:key in ['a', 'c', 'e', 'r']
+  execute printf('xnoremap <silent> <leader>c%s :<C-u>call <SID>AgentDispatch("%s")<CR>', s:key, s:key)
+  execute printf('nnoremap <silent> <leader>c%s :<C-u>call <SID>AgentDispatch("%s")<CR>', s:key, s:key)
+endfor
+
 " ==== 状态栏 (lightline) ====
 let g:lightline = {
       \ 'colorscheme': 'dracula',

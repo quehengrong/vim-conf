@@ -280,6 +280,13 @@ plugins {
     welcome-screen location="zellij:session-manager" {
         welcome_screen true
     }
+    // 在 vim/nvim 聚焦时自动进入 Locked 模式(等价于自动按下 Ctrl g)
+    // https://github.com/fresh2dev/zellij-autolock
+    autolock location="file:~/.config/zellij/plugins/zellij-autolock.wasm" {
+        is_enabled true
+        triggers "vim|nvim|vi|vim.basic|vim.gtk3"
+        print_to_log true
+    }
 }
 
 // Plugins to load in the background when a new session starts
@@ -287,6 +294,7 @@ plugins {
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
     zellij:link
+    autolock
     "file:/home/hque/.config/zellij/plugins/zellij-attention.wasm" {
         enabled "true"
         waiting_icon "..."

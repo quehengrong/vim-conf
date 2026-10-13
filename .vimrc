@@ -45,7 +45,7 @@ Plug 'justinmk/vim-sneak'
 " Vim 与 tmux 分屏联动(C-h/j/k/l)
 Plug 'christoomey/vim-tmux-navigator'
 " 状态栏
-Plug 'itchyny/lightline.vim'
+Plug 'vim-airline/vim-airline'
 
 call plug#end()
 
@@ -168,14 +168,6 @@ tnoremap <silent> <Esc> <C-\><C-n>
 " 终端模式下 <C-t> 直接关闭/隐藏终端
 tnoremap <silent> <C-t> <C-\><C-n>:call ToggleTerm()<CR>
 
-" ==== 状态栏 (lightline) ====
-let g:lightline = {
-      \ 'colorscheme': 'sonokai',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'cocstatus': 'coc#status'
-      \ },
-      \ }
+" ==== 状态栏 (vim-airline) ====
+set laststatus=2
+let g:airline_theme = 'sonokai'

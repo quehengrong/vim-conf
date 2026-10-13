@@ -80,7 +80,7 @@ sudo apt-get install -y vim-gtk3
 
 插件列表里的 `junegunn/fzf` 会在安装后自动编译到 `~/.fzf`（post-update hook），不需要额外安装 fzf。
 
-默认使用 [Sonokai](https://github.com/sainnhe/sonokai) 深色主题，状态栏也使用同一配色。配置会在 Vim 支持时开启 `termguicolors`，终端需支持真彩色才能准确显示主题颜色。已有配置更新后，执行 `:PlugInstall sonokai` 并重启 Vim 即可生效。
+默认使用 [Sonokai](https://github.com/sainnhe/sonokai) 深色主题，状态栏使用 [vim-airline](https://github.com/vim-airline/vim-airline) 和同一配色，单窗口时也始终显示。配置会在 Vim 支持时开启 `termguicolors`，终端需支持真彩色才能准确显示主题颜色。已有配置更新后，重新打开 Vim，执行 `:PlugInstall sonokai vim-airline`，再重启 Vim 即可生效。
 
 ### 6. 安装 coc 扩展
 

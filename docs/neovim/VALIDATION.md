@@ -11,6 +11,7 @@
 | 核心健康检查 | `checkhealth config vim.lsp nvim-treesitter` 无 ERROR/WARNING |
 | 结构与补全基础 | `smoke.lua` 46 个断言通过：C/C++ 函数/嵌套类型/union、模板头和分号、lambda 选择/跳过、count、边界、操作符选择、Shift-Tab 反缩进等 |
 | 多行宏 | 测试样例中宏内花括号不会被当成函数定义 |
+| 永久结构折叠 | C/C++ 样例验证通过：默认全部展开、折叠栏显示，`za` 切换、`zM/zR` 全部折叠/展开可用，大文件保护返回零折叠层级 |
 | LSP | `lsp.py` 11 个断言通过：临时 C++ 项目正确编译数据库、仅一个 clangd、定义、引用、重命名、符号和格式化 |
 | Git | `git.py` 24 个断言通过：带空格路径、部分暂存/取消暂存/撤销、保留其他块、staged/unstaged/untracked、删除/重命名、根提交、merge 选父、独立 worktree 和异步图 |
 | ACP | Claude/Codex 两个真实适配器均完成 initialize 与 session/new；未发送模型 prompt |

@@ -23,6 +23,16 @@ o.tabstop = 2
 o.autoread = true
 o.confirm = true
 o.completeopt = 'menu,menuone,noselect'
+-- Derive folds from syntax while keeping files fully expanded on entry.
+function _G.NeoFoldExpr()
+  if vim.bo.buftype ~= '' or vim.b.neo_bigfile then return '0' end
+  return vim.treesitter.foldexpr()
+end
+o.foldmethod = 'expr'
+o.foldexpr = 'v:lua.NeoFoldExpr()'
+o.foldlevel = 99
+o.foldlevelstart = 99
+o.foldcolumn = '1'
 -- Preserve terminal input: do not change stty, tmux prefix, or terminal mappings.
 if vim.env.SSH_CONNECTION and vim.fn.has('nvim-0.10') == 1 then
   vim.g.clipboard = 'osc52'

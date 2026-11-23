@@ -53,7 +53,7 @@ cd vim-conf
 ```lua
 return {
   clangd = '/path/to/clangd',
-  agent_provider = 'claude-agent-acp',
+  agent_provider = 'codex-acp',
   -- extended_keys = true,
   -- lsp = { clangd = { cmd = { 'clangd', '--compile-commands-dir=/path/to/build' } } },
 }
@@ -63,11 +63,11 @@ return {
 
 ## Claude / Codex
 
-`空格 aa` 打开默认 agent，`空格 ap` 选 provider 并创建独立会话，`空格 al` 返回已有会话。Claude/Codex 都需要各自有效的认证或服务配置。已有 CLI 能用不代表 ACP 一定能用；两者启动环境与 provider 行为可能不同。
+`空格 aa` 默认在右侧打开 Codex CLI，`空格 ac` 打开 Claude CLI。`空格 aA` 打开 ACP agent 面板（默认 Codex），`空格 ap` 选 ACP provider 并创建独立会话，`空格 al` 返回已有 ACP 会话。Claude/Codex 都需要各自有效的认证或服务配置。已有 CLI 能用不代表 ACP 一定能用；两者启动环境与 provider 行为可能不同。
 
 `空格 ap` 刻意使用新会话，避免把 Claude 的会话身份误当 Codex 会话；旧会话仍可从项目会话列表返回。跨项目建议新 tab 或独立 Neovim 进程。包装层按项目根维护会话，切换项目后创建或找回对应会话，不使用插件默认的“最近任意会话”回退。
 
-首次连接需要登录时，在自己的终端完成 provider 文档要求的认证，随后重试。没有启用 bypass/自动批准模式。插件面板中按当前 provider 的审批提示操作；`空格 ax` 取消生成。`空格 ac/ao` 分别是 Claude/Codex 官方 CLI 的终端备用入口。
+首次连接需要登录时，在自己的终端完成 provider 文档要求的认证，随后重试。没有启用 bypass/自动批准模式。插件面板中按当前 provider 的审批提示操作；`空格 ax` 取消生成。`空格 ac/ao` 分别在右侧约 40% 宽度的分屏中打开 Claude/Codex 官方 CLI，重复快捷键可隐藏或恢复，保留运行中的进程。
 
 代理只写入忽略的本机覆盖文件或已有环境变量，不复制 Zed 端口配置到公共配置。若从本机 SSH 到服务器，`127.0.0.1` 指的是服务器；自行确认服务实际可达。
 

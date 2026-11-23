@@ -16,6 +16,7 @@
 | LSP | `lsp.py` 11 个断言通过：临时 C++ 项目正确编译数据库、仅一个 clangd、定义、引用、重命名、符号和格式化 |
 | Git | `git.py` 24 个断言通过：带空格路径、部分暂存/取消暂存/撤销、保留其他块、staged/unstaged/untracked、删除/重命名、根提交、merge 选父、独立 worktree 和异步图 |
 | ACP | Claude/Codex 两个真实适配器均完成 initialize 与 session/new；未发送模型 prompt |
+| AI CLI 布局与默认入口 | 一次性 PTY 检查通过：`空格 aa` 默认启动 Codex CLI，右侧真实分屏宽约 40%，左侧代码可见；Codex/Claude 均可隐藏并恢复同一进程。布局测试使用临时同名交互进程，不发送模型请求；ACP 默认 provider 同时调整为 Codex，面板入口改为 `空格 aA` |
 | 真实 PTY | `ui.py` 通过：Dracula、文件选择器、输入/选择框、agent 侧栏开关、函数选区加入上下文、跨项目会话隔离、原会话恢复 |
 | tmux | 使用独立 tmux 3.0a 测试服务器，重复上述 UI/agent 检查通过；未修改用户会话 |
 | 撤销与文件保护 | `runtime.py` 通过：重启后可撤销，磁盘被外部修改时不覆盖未保存 buffer |

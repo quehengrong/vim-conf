@@ -55,6 +55,11 @@ function M.call(method)
 end
 function M.terminal(tool)
   if vim.fn.executable(tool) ~= 1 then return vim.notify(tool .. ' is missing; use :NeoHealth', vim.log.levels.WARN) end
-  Snacks.terminal({ tool }, { cwd = require('config.root').get() })
+  local terminal = vim.b.snacks_terminal
+  local cwd = terminal and terminal.cwd or require('config.root').get()
+  return Snacks.terminal({ tool }, {
+    cwd = cwd,
+    win = { position = 'right', relative = 'editor', width = 0.4 },
+  })
 end
 return M

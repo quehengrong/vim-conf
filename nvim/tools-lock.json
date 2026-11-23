@@ -1,0 +1,15 @@
+{
+  "neovim": "NVIM v0.12.6",
+  "node": "v22.21.1",
+  "tree-sitter": "tree-sitter 0.26.1",
+  "clangd": "clangd version 23.1.0 (https://github.com/llvm/llvm-project ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)",
+  "luals": "3.19.2",
+  "git": "git version 2.47.1",
+  "lazygit": "commit=24c3b7da630a205574359f5109a3658f46798f01, build date=2026-10-27T08:36:35Z, build source=unknown, version=24c3b7da, os=linux, arch=amd64, git version=2.47.1",
+  "tmux": "tmux 3.0a",
+  "pyright": "pyright 1.1.408",
+  "gcc": "gcc (Ubuntu 8.4.0-3ubuntu2) 8.4.0",
+  "npm_manifest": "nvim/tools/package-lock.json",
+  "parser_revisions": "nvim/parsers-lock.json",
+  "plugin_revisions": "nvim/lazy-lock.json"
+}

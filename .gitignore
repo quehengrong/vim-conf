@@ -2,3 +2,7 @@
 *.swp
 *.swo
 *~
+
+# Machine-specific Neovim overrides and generated dependencies
+nvim/local.lua
+nvim/tools/node_modules/

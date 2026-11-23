@@ -1,0 +1,15 @@
+{
+  "bash": "a06c2e4415e9bc0346c6b86d401879ffb44058f7",
+  "c": "f3202ac4f1041e0b0a2b908147d5dd0e951da7b1",
+  "cpp": "c009222808634c1014f82438d4883753516a2c24",
+  "javascript": "58404d8cf191d69f2674a8fd507bd5776f46cb11",
+  "json": "254c42a6476413b776221e03982ac8ae159eeb72",
+  "lua": "10fe0054734eec83049514ea2e718b2a56acd0c9",
+  "markdown": "41ff24a6c775492c543b09228aeb98d1cd2b3a0f",
+  "markdown_inline": "41ff24a6c775492c543b09228aeb98d1cd2b3a0f",
+  "python": "v0.25.0",
+  "tsx": "75b3874edb2dc714fb1fd77a32013d0f8699989f",
+  "typescript": "75b3874edb2dc714fb1fd77a32013d0f8699989f",
+  "vim": "039c8d0aa1deae00ddeb0374dd70bcc0ec56938d",
+  "vimdoc": "cf5f03718e699c0e37e4f26a4417fb744c714ba2"
+}

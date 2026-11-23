@@ -1,0 +1,14 @@
+{
+  "name": "neo-vim-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Isolated language servers and ACP adapters for nvim-zed",
+  "engines": { "node": ">=22" },
+  "dependencies": {
+    "@agentclientprotocol/claude-agent-acp": "0.109.1",
+    "@agentclientprotocol/codex-acp": "2.10.0",
+    "typescript": "5.9.3",
+    "typescript-language-server": "5.0.0",
+    "vscode-langservers-extracted": "4.10.0"
+  }
+}

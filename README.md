@@ -1,5 +1,15 @@
 # vim-conf
 
+## Neovim（neo-vim 分支）
+
+新增 Dracula 主题的独立 `nvim-zed` 环境，包含 Zed 风格快捷键、原生 LSP、函数/结构体导航、Claude/Codex ACP、Git 提交图和多文件 diff。现有 Vim 配置保持独立。
+
+- [安装与回滚](docs/neovim/INSTALL.md)
+- [快捷键与工作流](docs/neovim/KEYMAPS.md)
+- [实际验收结果](docs/neovim/VALIDATION.md)
+- [工具版本](docs/neovim/TOOLS.md)
+- [迁移方案](NEOVIM_MIGRATION_PLAN.md)
+
 个人开发环境配置仓库，覆盖 **Vim + tmux + Zsh + Git** 四个常用工具，克隆后按 README 操作即可在另一台机器上复用同一套配置。
 
 > 注意：本仓库只保存“你自己的配置文件”，第三方框架和插件（vim-plug、oh-my-zsh、gpakosz/.tmux、coc 扩展等）仍需要在目标机器上安装，README 已给出对应命令。

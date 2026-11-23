@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+export NVIM_APPNAME=nvim-zed
+neo_prefix="$HOME/.local"
+export PATH="$neo_prefix/opt/neo-vim-node-22.21.1/bin:$neo_prefix/share/nvim-zed/tools/node_modules/.bin:$neo_prefix/opt/tree-sitter-cli-0.26.1/bin:$neo_prefix/opt/neo-vim-luals-3.19.2/bin:$neo_prefix/bin:$PATH"
+exec "$neo_prefix/opt/nvim-0.12.6/bin/nvim" "$@"

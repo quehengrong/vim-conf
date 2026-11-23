@@ -17,6 +17,7 @@
 | Git | `git.py` 24 个断言通过：带空格路径、部分暂存/取消暂存/撤销、保留其他块、staged/unstaged/untracked、删除/重命名、根提交、merge 选父、独立 worktree 和异步图 |
 | ACP | Claude/Codex 两个真实适配器均完成 initialize 与 session/new；未发送模型 prompt |
 | AI CLI 布局与默认入口 | 一次性 PTY 检查通过：`空格 aa` 默认启动 Codex CLI，右侧真实分屏宽约 40%，左侧代码可见；Codex/Claude 均可隐藏并恢复同一进程。布局测试使用临时同名交互进程，不发送模型请求；ACP 默认 provider 同时调整为 Codex，面板入口改为 `空格 aA` |
+| CLI 选区上下文 | `cli.py` 使用真实 PTY 的临时接收进程验证：UTF-8、字符/行/矩形/反向/排他选区、路径与行号、未保存快照、代码围栏、多次追加和项目隔离；接收字节为完整 bracketed paste，末尾没有额外回车。未发送模型请求；首次 CLI 登录/项目确认需用户先完成 |
 | 真实 PTY | `ui.py` 通过：Dracula、文件选择器、输入/选择框、agent 侧栏开关、函数选区加入上下文、跨项目会话隔离、原会话恢复 |
 | tmux | 使用独立 tmux 3.0a 测试服务器，重复上述 UI/agent 检查通过；未修改用户会话 |
 | 撤销与文件保护 | `runtime.py` 通过：重启后可撤销，磁盘被外部修改时不覆盖未保存 buffer |
@@ -56,6 +57,7 @@
 python3 tests/neovim/lsp.py
 python3 tests/neovim/git.py
 python3 tests/neovim/runtime.py
+python3 tests/neovim/cli.py
 python3 tests/neovim/acp.py
 python3 tests/neovim/ui.py
 python3 tests/neovim/tmux.py

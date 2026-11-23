@@ -54,12 +54,6 @@ function M.call(method)
   if not ok then vim.notify('Agent unavailable: ' .. tostring(err) .. '\nUse :NeoHealth or the CLI fallback.', vim.log.levels.ERROR) end
 end
 function M.terminal(tool)
-  if vim.fn.executable(tool) ~= 1 then return vim.notify(tool .. ' is missing; use :NeoHealth', vim.log.levels.WARN) end
-  local terminal = vim.b.snacks_terminal
-  local cwd = terminal and terminal.cwd or require('config.root').get()
-  return Snacks.terminal({ tool }, {
-    cwd = cwd,
-    win = { position = 'right', relative = 'editor', width = 0.4 },
-  })
+  return require('config.cli').toggle(tool)
 end
 return M

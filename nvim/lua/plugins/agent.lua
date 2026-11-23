@@ -7,7 +7,9 @@ return {
   end, keys = {
     { '<leader>aa', function() require('config.agent').terminal('codex') end, desc = 'Toggle Codex CLI (right pane)' },
     { '<leader>aA', function() require('config.agent').call('toggle') end, desc = 'Toggle ACP agent pane' },
-    { '<leader>as', function() require('config.agent').call('add_selection') end, mode = 'x', desc = 'Add selection to agent' },
+    { '<leader>as', function() require('config.cli').send_selection('codex') end, mode = 'x', desc = 'Paste selection into Codex CLI draft' },
+    { '<leader>aS', function() require('config.cli').send_selection('claude') end, mode = 'x', desc = 'Paste selection into Claude CLI draft' },
+    { '<leader>av', function() require('config.agent').call('add_selection') end, mode = 'x', desc = 'Add selection to ACP agent pane' },
     { '<leader>af', function() require('config.agent').call('add_file') end, desc = 'Add file to agent' },
     { '<leader>ap', function() require('config.agent').call('new_session_with_provider') end, desc = 'Choose agent (new session)' },
     { '<leader>an', function() require('config.agent').call('new_session') end, desc = 'New agent session' },

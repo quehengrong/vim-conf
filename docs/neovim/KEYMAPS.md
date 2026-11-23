@@ -46,9 +46,21 @@ Leader 为空格。以下是实际配置；Ctrl-Shift、Ctrl-Tab、Ctrl-/ 默认
 
 保存默认不格式化。与旧 Vim 的区别：对齐由 `gA` 改为 `空格 ce`；`gi` 恢复原生用途，跳实现用 `gI`；`cd` 为 Zed 风格重命名。
 
-Tree-sitter Context 默认开启，滚动时顶部最多固定 3 行所属函数/类型上下文，小窗口和大文件自动跳过。Aerial 在右侧按需打开，优先使用 LSP 符号、回退到 Tree-sitter；在大纲内用 `j/k` 选择、Enter 跳转、`h/l` 折叠/展开、`q` 关闭。大纲使用文字图标，不要求安装 Nerd Font；其中 Ctrl-j/k 保留窗口导航用途。
-
 Tab/Shift-Tab 在菜单中选项，否则跳片段，最后缩进/反缩进。Enter 仅确认已明确选中的项，否则换行。Esc 先关菜单，再退出插入。手动补全 Ctrl-X Ctrl-O 或 Ctrl-Space。
+
+## 代码阅读辅助：顶部上下文与大纲
+
+已安装 `nvim-treesitter-context` 和 `aerial.nvim`，重新打开 `vim 文件名` 后加载，沿用 Dracula 配色。
+
+Tree-sitter Context 默认开启，滚动时顶部最多固定 3 行所属函数/类型上下文；无需打开侧栏。`空格 uc` 随时开关，小窗口和大文件自动跳过。
+
+Aerial 在右侧按需打开，优先使用 LSP 符号、回退到 Tree-sitter。推荐操作流程：
+
+1. `空格 co` 打开大纲并继续编辑代码；再次按下收起。
+2. `空格 cO` 聚焦大纲，使用 `j/k` 选择函数或类型。
+3. Enter 跳到对应定义；`h/l` 折叠/展开层级，`q` 关闭大纲。
+
+`gs` 仍然是临时文件符号搜索入口，Aerial 适合常驻查看文件结构。大纲使用文字图标，不要求 Nerd Font；Ctrl-j/k 保留窗口导航用途。缺少符号时可用 `:NeoHealth` 检查 LSP，并确认当前语言的 parser 已安装。
 
 ## 结构选择与跳转
 

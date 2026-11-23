@@ -1,6 +1,6 @@
 -- Loaded by ui.py inside a real PTY. Does not send a model prompt.
 vim.defer_fn(function()
-  local report = { dracula = vim.g.colors_name == 'dracula', checks = {} }
+  local report = { theme = vim.g.colors_name == require('config.theme').selected(), checks = {} }
   local errors = {}
   local notify = vim.notify
   vim.notify = function(msg, level, opts)

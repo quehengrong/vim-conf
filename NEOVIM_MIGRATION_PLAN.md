@@ -2,6 +2,8 @@
 
 状态：用户已于 2026-11-23 授权实施，分支 `neo-vim`，主题指定为 Dracula。实际验收见 `docs/neovim/VALIDATION.md`。
 
+后续主题调整：按用户要求默认切换为 Catppuccin Mocha；Dracula 保留为备选。`空格 ut` 打开实时预览选择器，确认后将本机偏好写入 state 目录，重启保留。当前操作说明以 `docs/neovim/KEYMAPS.md` 为准。
+
 实施调整：原生 gitgraph 在 NDAS 大仓库同步加载约 12 秒，默认改为异步 `git log --graph` 视图，保留提交选择、端点比较和 Diffview 联动；`:NeoNativeGraph` 仍可显式打开原生图。
 
 本文既是迁移设计，也是 Codex 的执行规格。实施保留隔离试用和旧 Vim，不自动切换默认编辑器。

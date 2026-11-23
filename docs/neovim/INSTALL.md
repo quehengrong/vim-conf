@@ -7,7 +7,7 @@
 ~/.local/bin/nvim-zed path/to/file.cpp
 ```
 
-这是 `NVIM_APPNAME=nvim-zed` 的隔离配置，采用 Dracula。按用户后续要求，本机 Zsh/Bash 的交互式 `vim` 已设置别名指向此启动器，因此 `vim path/to/file.cpp` 也会使用这套配置。`.vimrc`、CoC、tmux 和 Zed 配置保留；不设置 EDITOR/VISUAL。未创建全局 `nvim` 链接，启动器直接调用用户目录中的固定版本。
+这是 `NVIM_APPNAME=nvim-zed` 的隔离配置，默认采用 Catppuccin Mocha，可用 `空格 ut` 预览、切换并记住其他主题。按用户后续要求，本机 Zsh/Bash 的交互式 `vim` 已设置别名指向此启动器，因此 `vim path/to/file.cpp` 也会使用这套配置。`.vimrc`、CoC、tmux 和 Zed 配置保留；不设置 EDITOR/VISUAL。未创建全局 `nvim` 链接，启动器直接调用用户目录中的固定版本。
 
 新终端自动生效；当前 Zsh 可执行 `source ~/.zshrc`，Bash 可执行 `source ~/.bash_aliases`。别名只影响交互 shell，不改变通过 PATH 启动编辑器的外部程序。需要原 Vim 时使用 `command vim` 或 `/usr/local/bin/vim`。
 

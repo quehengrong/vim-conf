@@ -20,9 +20,28 @@ Leader 为空格。以下是实际配置；Ctrl-Shift、Ctrl-Tab、Ctrl-/ 默认
 | 窗口导航 | Ctrl-h/j/k/l、`空格 wh/wj/wk/wl` |
 | 终端 | `空格 tt` |
 | 搜索快捷键 | `空格 ?` |
+| 主题选择器（预览并记住选择） | `空格 ut` |
 | 显示搜索根与 LSP 根 | `空格 wr`、`:NeoRoot` |
 
 `:NeoRoot /path` 为当前 tab 覆盖搜索根；`:NeoRootReset` 清除。Git diff 始终按实际文件所属 worktree 计算，避免把搜索根覆盖误用于 Git 操作。
+
+## 快速更换主题
+
+默认使用 Catppuccin Mocha，保留 Dracula 作为备选。在普通模式按 `空格 ut` 打开主题选择器，输入名称过滤，用方向键或 Ctrl-n/p 选择并实时预览，Enter 确认；Esc 取消选择器时恢复原主题（若先退出输入模式，再按 Esc 关闭）。选择器只列出已安装或 Neovim 自带的主题。
+
+通过选择器确认的主题会保存到 `~/.local/state/nvim-zed/theme.json`，重新打开 `vim` 后仍然生效。状态栏自动跟随当前主题配色，本机主题偏好不写入 Git。
+
+也可执行 `:NeoTheme` 打开选择器，或使用命令直接切换并记住：
+
+| 命令 | 效果 |
+| --- | --- |
+| `:NeoTheme catppuccin-mocha` | 深色 Mocha（默认） |
+| `:NeoTheme catppuccin-macchiato` | 深色 Macchiato |
+| `:NeoTheme catppuccin-frappe` | 深色 Frappé |
+| `:NeoTheme catppuccin-latte` | 浅色 Latte |
+| `:NeoTheme dracula` | 切回 Dracula |
+
+原生 `:colorscheme 名称` 仍可使用，但只影响当前进程；需要重启后保留时使用 `:NeoTheme 名称` 或主题选择器。安装其他主题插件后，会出现在选择器中。
 
 ## 代码
 
@@ -50,7 +69,7 @@ Tab/Shift-Tab 在菜单中选项，否则跳片段，最后缩进/反缩进。En
 
 ## 代码阅读辅助：顶部上下文与大纲
 
-已安装 `nvim-treesitter-context` 和 `aerial.nvim`，重新打开 `vim 文件名` 后加载，沿用 Dracula 配色。
+已安装 `nvim-treesitter-context` 和 `aerial.nvim`，重新打开 `vim 文件名` 后加载，跟随当前主题配色。
 
 Tree-sitter Context 默认开启，滚动时顶部最多固定 3 行所属函数/类型上下文；无需打开侧栏。`空格 uc` 随时开关，小窗口和大文件自动跳过。
 

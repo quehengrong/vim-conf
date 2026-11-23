@@ -5,9 +5,9 @@
 | 组件 | 本机版本 / 处理 |
 | --- | --- |
 | Neovim | 0.12.6，在用户目录从 v0.12.6 源码编译 |
-| 主题 | Dracula；插件确切提交见 lazy-lock.json |
-| 插件 | 21 个，确切提交见 [lazy-lock.json](../../nvim/lazy-lock.json) |
-| 代码阅读辅助 | nvim-treesitter-context、aerial.nvim，使用现有 parser/LSP 与 Dracula 配色 |
+| 主题 | 默认 Catppuccin Mocha，保留 Dracula；插件确切提交见 lazy-lock.json |
+| 插件 | 22 个，确切提交见 [lazy-lock.json](../../nvim/lazy-lock.json) |
+| 代码阅读辅助 | nvim-treesitter-context、aerial.nvim，使用现有 parser/LSP 并跟随主题 |
 | Tree-sitter CLI | 0.26.1，从对应 tag 的 crates/cli 编译 |
 | Rust | 1.100.0，隔离工具链，仅用于 CLI 构建 |
 | parser | C/C++、Python、Lua、JSON、JS/TS/TSX、Vim/Vimdoc、Bash、Markdown；确切源提交见 [parsers-lock.json](../../nvim/parsers-lock.json) |

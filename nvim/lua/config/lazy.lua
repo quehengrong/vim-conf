@@ -11,6 +11,6 @@ require('lazy').setup({ { import = 'plugins' } }, {
   concurrency = 4,
   git = { timeout = 300 },
   change_detection = { notify = false },
-  install = { missing = false, colorscheme = { 'dracula' } },
+  install = { missing = false, colorscheme = { 'catppuccin-mocha', 'dracula' } },
   performance = { rtp = { disabled_plugins = { 'netrwPlugin' } } },
 })

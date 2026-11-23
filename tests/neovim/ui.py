@@ -34,7 +34,7 @@ with tempfile.TemporaryDirectory(prefix='neo-vim-ui-') as directory:
                         raise
         assert process.poll() is not None, 'UI probe timed out'
         data = json.loads(report.read_text())
-        assert data['ok'] and data['dracula'], data
+        assert data['ok'] and data['theme'], data
         assert all(data['checks'].values()), data
         assert not data['errors'], data['errors']
         print('PASS UI:', ', '.join(data['checks']))

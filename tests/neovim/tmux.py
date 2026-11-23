@@ -22,7 +22,7 @@ with tempfile.TemporaryDirectory(prefix='neo-vim-tmux-') as directory:
             time.sleep(0.1)
         assert report.exists(), 'tmux UI probe timed out'
         data = json.loads(report.read_text())
-        assert data['ok'] and data['dracula'] and all(data['checks'].values()) and not data['errors'], data
+        assert data['ok'] and data['theme'] and all(data['checks'].values()) and not data['errors'], data
         print('PASS tmux UI:', ', '.join(data['checks']))
     finally:
         subprocess.run(tmux + ['kill-server'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

@@ -2,7 +2,7 @@
 
 ## Neovim（neo-vim 分支）
 
-新增 Dracula 主题的独立 `nvim-zed` 环境，包含 Zed 风格快捷键、原生 LSP、函数/结构体导航、Claude/Codex ACP、Git 提交图和多文件 diff。现有 Vim 配置保持独立。
+新增默认 Catppuccin Mocha 主题的独立 `nvim-zed` 环境，包含 Zed 风格快捷键、原生 LSP、函数/结构体导航、Claude/Codex ACP、Git 提交图和多文件 diff。`空格 ut` 可预览和切换主题，确认后重启保留；Dracula 仍可选。现有 Vim 配置保持独立。
 
 - [安装与回滚](docs/neovim/INSTALL.md)
 - [快捷键与工作流](docs/neovim/KEYMAPS.md)

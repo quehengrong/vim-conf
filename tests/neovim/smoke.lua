@@ -13,7 +13,7 @@ end
 local function normal(keys) vim.cmd.normal({ args = { keys } }) end
 local function escape() vim.cmd.normal({ args = { '\27' }, bang = true }) end
 local function run()
-  check(vim.g.colors_name == 'dracula', 'Dracula is active')
+  check(vim.g.colors_name == require('config.theme').selected(), 'Selected theme is active')
   for _, file in ipairs(vim.fn.glob(repo .. '/nvim/lua/**/*.lua', false, true)) do
     check(loadfile(file) ~= nil, 'Lua syntax: ' .. file)
   end

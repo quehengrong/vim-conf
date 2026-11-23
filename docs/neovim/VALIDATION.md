@@ -6,10 +6,11 @@
 
 | 类别 | 证据与结果 |
 | --- | --- |
-| 启动与主题 | Neovim 0.12.6 可运行，Dracula 激活，21 个插件已安装并锁定（含后续增加的 Context/Aerial） |
+| 启动与主题 | Neovim 0.12.6 可运行，默认 Catppuccin Mocha，保留 Dracula，22 个插件已安装并锁定 |
+| 主题选择 | 真实 PTY 检查通过：选择器实时预览、取消恢复、确认记住、Latte/Mocha 明暗切换、状态栏跟随；独立进程重启后可恢复所选主题 |
 | 代码阅读辅助 | 后续一次性真实 PTY 检查通过：长 C++ 函数顶部上下文可见、最多 3 行、可开关；Aerial 展示类型/函数，回车跳到目标定义；Dracula 保持正常 |
 | 核心健康检查 | `checkhealth config vim.lsp nvim-treesitter` 无 ERROR/WARNING |
-| 结构与补全基础 | `smoke.lua` 46 个断言通过：C/C++ 函数/嵌套类型/union、模板头和分号、lambda 选择/跳过、count、边界、操作符选择、Shift-Tab 反缩进等 |
+| 结构与补全基础 | `smoke.lua` 当前 48 个断言通过：C/C++ 函数/嵌套类型/union、模板头和分号、lambda 选择/跳过、count、边界、操作符选择、Shift-Tab 反缩进等 |
 | 多行宏 | 测试样例中宏内花括号不会被当成函数定义 |
 | 永久结构折叠 | C/C++ 样例验证通过：默认全部展开、折叠栏显示，`za` 切换、`zM/zR` 全部折叠/展开可用，大文件保护返回零折叠层级 |
 | LSP | `lsp.py` 11 个断言通过：临时 C++ 项目正确编译数据库、仅一个 clangd、定义、引用、重命名、符号和格式化 |

@@ -6,7 +6,8 @@
 
 | 类别 | 证据与结果 |
 | --- | --- |
-| 启动与主题 | Neovim 0.12.6 可运行，Dracula 激活，19 个插件已安装并锁定 |
+| 启动与主题 | Neovim 0.12.6 可运行，Dracula 激活，21 个插件已安装并锁定（含后续增加的 Context/Aerial） |
+| 代码阅读辅助 | 后续一次性真实 PTY 检查通过：长 C++ 函数顶部上下文可见、最多 3 行、可开关；Aerial 展示类型/函数，回车跳到目标定义；Dracula 保持正常 |
 | 核心健康检查 | `checkhealth config vim.lsp nvim-treesitter` 无 ERROR/WARNING |
 | 结构与补全基础 | `smoke.lua` 46 个断言通过：C/C++ 函数/嵌套类型/union、模板头和分号、lambda 选择/跳过、count、边界、操作符选择、Shift-Tab 反缩进等 |
 | 多行宏 | 测试样例中宏内花括号不会被当成函数定义 |

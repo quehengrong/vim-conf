@@ -12,5 +12,6 @@ return {
     { '<leader>a', group = 'Agent' }, { '<leader>c', group = 'Code' },
     { '<leader>w', group = 'Windows' }, { '<leader>b', group = 'Buffers' },
     { '<leader>t', group = 'Terminal' }, { '<leader>x', group = 'Diagnostics' },
+    { '<leader>u', group = 'UI' },
   } } },
 }

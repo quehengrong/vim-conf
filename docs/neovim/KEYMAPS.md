@@ -34,6 +34,9 @@ Leader 为空格。以下是实际配置；Ctrl-Shift、Ctrl-Tab、Ctrl-/ 默认
 | 重命名 | F2、`cd`、`空格 cr` |
 | 代码动作 | `g.`、`空格 ca` |
 | 文件符号 / 项目符号 | `gs` / `gS` |
+| 打开/收起代码大纲（保留编辑焦点） | `空格 co` |
+| 打开并聚焦代码大纲 | `空格 cO` |
+| 开关顶部固定代码上下文 | `空格 uc` |
 | 诊断上 / 下 | `[d` / `]d` |
 | 诊断列表 | `空格 xx` |
 | 格式化文件 / 可视选区 | `空格 =`；条件别名 Ctrl-Shift-I |
@@ -42,6 +45,8 @@ Leader 为空格。以下是实际配置；Ctrl-Shift、Ctrl-Tab、Ctrl-/ 默认
 | surround | 原有 `ys` / `cs` / `ds` |
 
 保存默认不格式化。与旧 Vim 的区别：对齐由 `gA` 改为 `空格 ce`；`gi` 恢复原生用途，跳实现用 `gI`；`cd` 为 Zed 风格重命名。
+
+Tree-sitter Context 默认开启，滚动时顶部最多固定 3 行所属函数/类型上下文，小窗口和大文件自动跳过。Aerial 在右侧按需打开，优先使用 LSP 符号、回退到 Tree-sitter；在大纲内用 `j/k` 选择、Enter 跳转、`h/l` 折叠/展开、`q` 关闭。大纲使用文字图标，不要求安装 Nerd Font；其中 Ctrl-j/k 保留窗口导航用途。
 
 Tab/Shift-Tab 在菜单中选项，否则跳片段，最后缩进/反缩进。Enter 仅确认已明确选中的项，否则换行。Esc 先关菜单，再退出插入。手动补全 Ctrl-X Ctrl-O 或 Ctrl-Space。
 

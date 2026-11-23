@@ -7,7 +7,9 @@
 ~/.local/bin/nvim-zed path/to/file.cpp
 ```
 
-这是 `NVIM_APPNAME=nvim-zed` 的隔离配置，采用 Dracula。普通 `vim`、`.vimrc`、CoC、tmux 和 Zed 配置没有改动；不自动设置 EDITOR/VISUAL。未创建全局 `nvim` 链接，启动器直接调用用户目录中的固定版本。
+这是 `NVIM_APPNAME=nvim-zed` 的隔离配置，采用 Dracula。按用户后续要求，本机 Zsh/Bash 的交互式 `vim` 已设置别名指向此启动器，因此 `vim path/to/file.cpp` 也会使用这套配置。`.vimrc`、CoC、tmux 和 Zed 配置保留；不设置 EDITOR/VISUAL。未创建全局 `nvim` 链接，启动器直接调用用户目录中的固定版本。
+
+新终端自动生效；当前 Zsh 可执行 `source ~/.zshrc`，Bash 可执行 `source ~/.bash_aliases`。别名只影响交互 shell，不改变通过 PATH 启动编辑器的外部程序。需要原 Vim 时使用 `command vim` 或 `/usr/local/bin/vim`。
 
 进入后先用 `:NeoHealth` 查看工具与路径，`:NeoRoot` 查看搜索根和 LSP 根，`空格 ?` 查看映射。`空格` 后暂停会显示 which-key 分组。
 
@@ -85,7 +87,7 @@ npm 工具使用 `nvim/tools/package-lock.json` 与 `npm ci`；更换版本时�
 
 ## 回滚
 
-直接退出 `nvim-zed`，继续使用 `vim` 即完成工作流回退。
+直接退出 `nvim-zed`，使用 `command vim` 即可回到旧 Vim。要恢复普通 `vim` 的含义，当前 shell 执行 `unalias vim`，并删除 `~/.zshrc`、`~/.bash_aliases`（以及仓库 `zsh/.zshrc`）末尾新增的 Neovim 别名段。本机 Zsh 原文件备份位于 `~/.local/state/nvim-zed/backups/20261123-053819/zshrc`。
 
 若要停用入口，先核对链接目标，再仅删除以下两个链接：
 

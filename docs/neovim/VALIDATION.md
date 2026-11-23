@@ -16,7 +16,7 @@
 | 真实 PTY | `ui.py` 通过：Dracula、文件选择器、输入/选择框、agent 侧栏开关、函数选区加入上下文、跨项目会话隔离、原会话恢复 |
 | tmux | 使用独立 tmux 3.0a 测试服务器，重复上述 UI/agent 检查通过；未修改用户会话 |
 | 撤销与文件保护 | `runtime.py` 通过：重启后可撤销，磁盘被外部修改时不覆盖未保存 buffer |
-| 保留旧环境 | `.vimrc`、`.vim/`、tmux/Zed/shell 配置未修改；未设置 EDITOR/VISUAL 或 vim alias |
+| 保留旧环境 | `.vimrc`、`.vim/`、tmux/Zed 配置保留；未设置 EDITOR/VISUAL。用户后续要求增加交互 shell 的 vim 别名，原 Vim 可用 `command vim` 启动 |
 | 静态检查 | Lua 文件可加载，shell 脚本语法检查通过，Git whitespace 检查通过 |
 
 ## 性能实测

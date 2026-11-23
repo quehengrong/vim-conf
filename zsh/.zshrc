@@ -136,3 +136,8 @@ fi
 if command -v fastfetch >/dev/null 2>&1; then
   fastfetch
 fi
+
+# Use the isolated Dracula Neovim configuration for interactive vim commands.
+if [ -x "$HOME/.local/bin/nvim-zed" ]; then
+  alias vim='"$HOME/.local/bin/nvim-zed"'
+fi
